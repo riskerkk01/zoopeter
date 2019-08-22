@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zoopeter.database">
+    <select id="getAdbrix" resultType="zoopeter.module.domain.Adbrix" parameterType="Int">
+        SELECT seq, regtime, appkey, package_name, gaid, ifa, ifv, model, network, os_ver, sdk_version, platform, 
+        		country, language, width, height, carrier, FROM_UNIXTIME(first_install_time) as first_install_time, event_type_code, conversion_ip, FROM_UNIXTIME(event_time) as event_time, session_id, 
+        		cb_param1, cb_param2, cb_param3, cb_param4, cb_param5, activity_group, activity, activity_param, order_id, 
+        		product_id, product_name, price, quantity, sales, category, currency, event_detail 
+        FROM postback_adbrix
+        WHERE seq=#{seq}
+        LIMIT 1
+    </select>
+       
+    <select id="countAdbrix" resultType="int" parameterType="zoopeter.module.domain.Adbrix">
+        SELECT count(1) 
+        FROM postback_adbrix 
+		WHERE 1=1
+		<if test="startdate != '' and startdate != null" >AND regtime >= #{startdate}</if>
+		<if test="enddate != '' and enddate != null" >AND regtime &lt;= #{enddate}</if>
+		<if test="event_type_code != '' and event_type_code != null" >AND event_type_code = #{event_type_code}</if>
+		<if test="cb_param1 != '' and cb_param1 != null" >AND cb_param1 = #{cb_param1}</if>
+		<if test="cb_param2 != '' and cb_param2 != null" >AND cb_param2 = #{cb_param2}</if>
+		<if test="cb_param3 != '' and cb_param3 != null" >AND cb_param3 = #{cb_param3}</if>
+		<if test="cb_param4 != '' and cb_param4 != null" >AND cb_param4 = #{cb_param4}</if>
+		<if test="searchtype == 'appkey' and searchkeyword != ''" >AND appkey = #{searchkeyword}</if>
+        <if test="searchtype == 'package_name' and searchkeyword != ''" >AND package_name = #{searchkeyword}</if>
+        <if test="searchtype == 'gaid' and searchkeyword != ''" >AND gaid = #{searchkeyword}</if>
+        <if test="searchtype == 'cb_param3' and searchkeyword != ''" >AND cb_param3 like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'event_type_code' and searchkeyword != ''" >AND event_type_code = #{searchkeyword}</if>
+    </select>    
+    <select id="getAdbrixList" resultType="zoopeter.module.domain.Adbrix" parameterType="zoopeter.module.domain.Adbrix">
+        SELECT seq, regtime, appkey, package_name, gaid, ifa, ifv, model, network, os_ver, sdk_version, platform, 
+        		country, language, width, height, carrier, FROM_UNIXTIME(first_install_time) as first_install_time, event_type_code, conversion_ip, FROM_UNIXTIME(event_time) as event_time, session_id, 
+        		cb_param1, cb_param2, cb_param3, cb_param4, cb_param5, activity_group, activity, activity_param, order_id, 
+        		product_id, product_name, price, quantity, sales, category, currency, event_detail 
+        FROM postback_adbrix
+        WHERE 1=1
+		<if test="startdate != '' and startdate != null" >AND regtime >= #{startdate}</if>
+		<if test="enddate != '' and enddate != null" >AND regtime &lt;= #{enddate}</if>
+		<if test="event_type_code != '' and event_type_code != null" >AND event_type_code = #{event_type_code}</if>
+		<if test="cb_param1 != '' and cb_param1 != null" >AND cb_param1 = #{cb_param1}</if>
+		<if test="cb_param2 != '' and cb_param2 != null" >AND cb_param2 = #{cb_param2}</if>
+		<if test="cb_param3 != '' and cb_param3 != null" >AND cb_param3 = #{cb_param3}</if>
+		<if test="cb_param4 != '' and cb_param4 != null" >AND cb_param4 = #{cb_param4}</if>
+		<if test="searchtype == 'appkey' and searchkeyword != ''" >AND appkey = #{searchkeyword}</if>
+        <if test="searchtype == 'package_name' and searchkeyword != ''" >AND package_name = #{searchkeyword}</if>
+        <if test="searchtype == 'gaid' and searchkeyword != ''" >AND gaid = #{searchkeyword}</if>
+        <if test="searchtype == 'cb_param3' and searchkeyword != ''" >AND cb_param3 like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'event_type_code' and searchkeyword != ''" >AND event_type_code = #{searchkeyword}</if>
+        ORDER BY seq DESC
+        <if test="count != null and count > 0 and start != null">
+        LIMIT #{count} offset #{start}
+        </if>
+    </select>
+    
+    <insert id="setAdbrix" parameterType="zoopeter.module.domain.Adbrix" useGeneratedKeys="true" keyProperty="seq">
+        INSERT INTO postback_adbrix ( regtime, appkey, package_name, gaid, ifa, ifv, model, network, os_ver, sdk_version, platform, country, language, 
+        		width, height, carrier, first_install_time, event_type_code, conversion_ip, event_time, session_id, 
+        		cb_param1, cb_param2, cb_param3, cb_param4, cb_param5, activity_group, activity, activity_param, order_id, 
+        		product_id, product_name, price, quantity, sales, category, currency, event_detail ) 
+        VALUES ( CURRENT_TIMESTAMP, #{appkey}, #{package_name}, #{gaid}, #{ifa}, #{ifv}, #{model}, #{network}, #{os_ver}, #{sdk_version}, #{platform}, #{country}, #{language}, 
+        		#{width}, #{height}, #{carrier}, #{first_install_time}, #{event_type_code}, #{conversion_ip}, #{event_time}, #{session_id}, 
+        		#{cb_param1}, #{cb_param2}, #{cb_param3}, #{cb_param4}, #{cb_param5}, #{activity_group}, #{activity}, #{activity_param}, #{order_id}, 
+        		#{product_id}, #{product_name}, #{price}, #{quantity}, #{sales}, #{category}, #{currency}, #{event_detail} )
+    </insert>    
+
+    <update id="updateAdbrix" parameterType="zoopeter.module.domain.Adbrix">
+        UPDATE postback_adbrix SET 
+        	appkey = #{appkey}
+        WHERE seq = #{seq}
+    </update> 
+       
+    <delete id="deleteAdbrix" parameterType="int">
+        DELETE FROM postback_adbrix  
+        WHERE seq = #{seq}
+    </delete> 
+
+	<select id="getAdbrixListForDashboard" resultType="zoopeter.module.domain.Adbrix" parameterType="zoopeter.module.domain.Adbrix">
+        SELECT regtime, cb_param2, cb_param3, event_type_code, count(seq) as count, sum(sales) as sales FROM (
+        	SELECT seq, cb_param2, cb_param3, event_type_code, sales, date(regtime) as regtime FROM postback_adbrix
+        	WHERE 1=1
+        	AND event_type_code in ( 1, 4 )
+        	<if test="regtime != '' and regtime != null" >AND regtime >= #{regtime}</if>
+			<if test="startdate != '' and startdate != null" >AND regtime >= #{startdate}</if>
+			<if test="enddate != '' and enddate != null" >AND regtime &lt;= #{enddate}</if>
+			<if test="event_type_code != '' and event_type_code != null" >AND event_type_code = #{event_type_code}</if>
+			<if test="cb_param1 != '' and cb_param1 != null" >AND cb_param1 = #{cb_param1}</if>
+			<if test="cb_param2 != '' and cb_param2 != null" >AND cb_param2 = #{cb_param2}</if>
+			<if test="cb_param3 != '' and cb_param3 != null" >AND cb_param3 = #{cb_param3}</if>
+			<if test="cb_param4 != '' and cb_param4 != null" >AND cb_param4 = #{cb_param4}</if>
+	        <if test="searchtype == 'cb_param3' and searchkeyword != ''" >AND cb_param3 like CONCAT('%',#{searchkeyword},'%')</if>
+        	<if test="searchtype == 'event_type_code' and searchkeyword != ''" >AND event_type_code = #{searchkeyword}</if>
+        	) as T 
+        GROUP BY regtime, cb_param2, cb_param3, event_type_code
+        ORDER BY regtime ASC
+    </select>
+    
+</mapper>
+
+
+
+

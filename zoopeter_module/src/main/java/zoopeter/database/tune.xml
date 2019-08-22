@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zoopeter.database">
+    <select id="getTune" resultType="zoopeter.module.domain.Tune" parameterType="Int">
+        SELECT seq, regtime, aaid, idfa, agency, secondary_publisher, campaign, campaign_id, channel, ad_set_name, ad_set_id, ad_name, ad_id, 
+        	click_id, event_name, event_timestamp, is_attributed, bundle_id, app_name, app_version, language, os, os_version, client_ip, country, 
+        	device_id, goal_id, user_agent 
+        FROM postback_tune
+        WHERE seq=#{seq}
+        LIMIT 1
+    </select>
+       
+    <select id="countTune" resultType="int" parameterType="zoopeter.module.domain.Tune">
+        SELECT count(1) 
+        FROM postback_tune 
+		WHERE 1=1
+		<if test="startdate != '' and startdate != null" >AND regtime >= #{startdate}</if>
+		<if test="enddate != '' and enddate != null" >AND regtime &lt;= #{enddate}</if>
+		<if test="campaign != '' and campaign != null" >AND campaign = #{campaign}</if>
+		<if test="channel != '' and channel != null" >AND channel = #{channel}</if>
+		<if test="secondary_publisher != '' and secondary_publisher != null" >AND secondary_publisher = #{secondary_publisher}</if>
+		
+		<if test="searchtype == 'appkey' and searchkeyword != ''" >AND appkey = #{searchkeyword}</if>
+        <if test="searchtype == 'package_name' and searchkeyword != ''" >AND package_name = #{searchkeyword}</if>
+        <if test="searchtype == 'gaid' and searchkeyword != ''" >AND gaid = #{searchkeyword}</if>
+        <if test="searchtype == 'cb_param3' and searchkeyword != ''" >AND cb_param3 like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'event_type_code' and searchkeyword != ''" >AND event_type_code = #{searchkeyword}</if>
+    </select>    
+    <select id="getTuneList" resultType="zoopeter.module.domain.Tune" parameterType="zoopeter.module.domain.Tune">
+        SELECT seq, regtime, aaid, idfa, agency, secondary_publisher, campaign, campaign_id, channel, ad_set_name, ad_set_id, ad_name, ad_id, 
+        	click_id, event_name, event_timestamp, is_attributed, bundle_id, app_name, app_version, language, os, os_version, client_ip, country, 
+        	device_id, goal_id, user_agent
+        FROM postback_tune
+        WHERE 1=1
+		<if test="startdate != '' and startdate != null" >AND regtime >= #{startdate}</if>
+		<if test="enddate != '' and enddate != null" >AND regtime &lt;= #{enddate}</if>
+		<if test="campaign != '' and campaign != null" >AND campaign = #{campaign}</if>
+		<if test="channel != '' and channel != null" >AND channel = #{channel}</if>
+		<if test="secondary_publisher != '' and secondary_publisher != null" >AND secondary_publisher = #{secondary_publisher}</if>
+		<if test="searchtype == 'appkey' and searchkeyword != ''" >AND appkey = #{searchkeyword}</if>
+        <if test="searchtype == 'package_name' and searchkeyword != ''" >AND package_name = #{searchkeyword}</if>
+        <if test="searchtype == 'gaid' and searchkeyword != ''" >AND gaid = #{searchkeyword}</if>
+        <if test="searchtype == 'cb_param3' and searchkeyword != ''" >AND cb_param3 like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'event_type_code' and searchkeyword != ''" >AND event_type_code = #{searchkeyword}</if>
+        ORDER BY seq DESC
+        <if test="count != null and count > 0 and start != null">
+        LIMIT #{count} offset #{start}
+        </if>
+    </select>
+    
+    <insert id="setTune" parameterType="zoopeter.module.domain.Tune" useGeneratedKeys="true" keyProperty="seq">
+        INSERT INTO postback_tune ( regtime, aaid, idfa, agency, secondary_publisher, campaign, campaign_id, channel, ad_set_name, ad_set_id, ad_name, ad_id, 
+        	click_id, event_name, event_timestamp, is_attributed, bundle_id, app_name, app_version, language, os, os_version, client_ip, country, 
+        	device_id, goal_id, user_agent ) 
+        VALUES ( CURRENT_TIMESTAMP, #{aaid}, #{idfa}, #{agency}, #{secondary_publisher}, #{campaign}, #{campaign_id}, #{channel}, #{ad_set_name}, #{ad_set_id}, #{ad_name}, #{ad_id},
+        		#{click_id}, #{event_name}, #{event_timestamp}, #{is_attributed}, #{bundle_id}, #{app_name}, #{app_version}, #{language}, #{os}, #{os_version}, #{client_ip}, #{country},
+        		#{device_id}, #{goal_id}, #{user_agent} )
+    </insert>    
+
+    <update id="updateTune" parameterType="zoopeter.module.domain.Tune">
+        UPDATE postback_tune SET 
+        	appkey = #{appkey}
+        WHERE seq = #{seq}
+    </update> 
+       
+    <delete id="deleteTune" parameterType="int">
+        DELETE FROM postback_tune  
+        WHERE seq = #{seq}
+    </delete> 
+
+</mapper>
+
+
+
+

@@ -1,0 +1,27 @@
+<route> 
+<template id="sample">
+	<div class="alert alert-primary">
+		<div>sample</div>
+		<p>samplexxxx</p>
+	</div>
+</template> 
+<script type="text/javascript">
+var sample = Vue.component('sample', {
+	template : '#sample',
+	data : function() { return {
+		xxx: '1'
+		}
+	},
+	created : function() {
+		console.log("sample created");
+	},
+	mounted : function() {
+		console.log('sample');
+	},
+	updated: function() {
+	},
+	method : {
+	}
+});
+</script>
+</route>

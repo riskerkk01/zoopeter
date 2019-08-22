@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zoopeter.database">
+    <select id="getContactus" resultType="zoopeter.module.domain.Contactus" parameterType="Int">
+        SELECT seq, name, subject, email, message, rtime 
+        FROM contactus
+        WHERE seq=#{seq}
+        LIMIT 1
+    </select>
+    <select id="getContactusByCode" resultType="zoopeter.module.domain.Contactus" parameterType="String">
+        SELECT seq, name, subject, email, message, rtime
+        FROM contactus
+        WHERE code=#{code}
+        LIMIT 1
+    </select>    
+    <select id="countContactus" resultType="int" parameterType="zoopeter.module.domain.Contactus">
+        SELECT count(1) 
+        FROM contactus
+		WHERE 1=1
+		<if test="searchtype == 'subject' and searchkeyword != ''" >AND subject like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'name' and searchkeyword != ''" >AND name like CONCAT('%',#{searchkeyword},'%')</if>
+    </select>    
+    <select id="getContactusList" resultType="zoopeter.module.domain.Contactus" parameterType="zoopeter.module.domain.Contactus">
+        SELECT seq, name, subject, email, message, rtime 
+        FROM contactus
+        WHERE 1=1
+        <if test="searchtype == 'subject' and searchkeyword != ''" >AND subject like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'name' and searchkeyword != ''" >AND name like CONCAT('%',#{searchkeyword},'%')</if>
+        ORDER BY seq DESC
+        <if test="count != null and count > 0 and start != null">
+        LIMIT #{count} offset #{start}
+        </if>
+    </select>
+    
+    <insert id="setContactus" parameterType="zoopeter.module.domain.Contactus" useGeneratedKeys="true" keyProperty="seq">
+        INSERT INTO contactus ( name, subject, email, message, rtime ) 
+        VALUES ( #{name}, #{subject}, #{email}, #{message}, CURRENT_TIMESTAMP )
+    </insert>    
+
+    <update id="updateContactus" parameterType="zoopeter.module.domain.Contactus">
+        UPDATE contactus SET 
+        	name = #{name},
+        	subject = #{subject},
+        	message = #{message},
+        	rtime = CURRENT_TIMESTAMP
+        WHERE seq = #{seq}
+    </update> 
+     
+    <delete id="deleteContactus" parameterType="int">
+        DELETE FROM contactus  
+        WHERE seq = #{seq}
+    </delete> 
+
+</mapper>
+
+
+
+

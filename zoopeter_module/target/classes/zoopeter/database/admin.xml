@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zoopeter.database">
+    <select id="getAdmin" resultType="zoopeter.module.domain.Admin" parameterType="Int">
+        SELECT adminid, type, state, rtime, mtime, id, passwd, name, description, publisherid, ( select name from publisher where publisherid = admin.publisherid ) as publishername
+        FROM admin
+        WHERE adminid=#{adminid}
+        LIMIT 1
+    </select>
+    <select id="getAdminById" resultType="zoopeter.module.domain.Admin" parameterType="String">
+        SELECT adminid, type, state, rtime, mtime, id, passwd, name, description, publisherid, ( select name from publisher where publisherid = admin.publisherid ) as publishername
+        FROM admin
+        WHERE id=#{id}
+        LIMIT 1
+    </select>     
+    <select id="countAdmin" resultType="int" parameterType="zoopeter.module.domain.Admin">
+        SELECT count(1) 
+        FROM admin 
+		WHERE 1=1
+		<if test="searchtype == 'id' and searchkeyword != ''" >AND id like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'name' and searchkeyword != ''" >AND name like CONCAT('%',#{searchkeyword},'%')</if>
+    </select>    
+    <select id="getAdminList" resultType="zoopeter.module.domain.Admin" parameterType="zoopeter.module.domain.Admin">
+        SELECT adminid, type, state, rtime, mtime, id, passwd, name, description, publisherid, ( select name from publisher where publisherid = admin.publisherid ) as publishername
+        FROM admin
+        WHERE 1=1
+        <if test="searchtype == 'id' and searchkeyword != ''" >AND id like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'name' and searchkeyword != ''" >AND name like CONCAT('%',#{searchkeyword},'%')</if>
+        ORDER BY adminid DESC
+        <if test="count != null and count > 0 and start != null">
+        LIMIT #{count} offset #{start}
+        </if>
+    </select>
+    
+    <insert id="setAdmin" parameterType="zoopeter.module.domain.Admin" useGeneratedKeys="true" keyProperty="adminid">
+        INSERT INTO admin ( type, state, id, passwd, name, description, publisherid, mtime ) 
+        VALUES ( #{type}, #{state}, #{id}, #{passwd}, #{name}, #{description}, #{publisherid}, CURRENT_TIMESTAMP )
+    </insert>    
+
+    <update id="updateAdmin" parameterType="zoopeter.module.domain.Admin">
+        UPDATE admin SET 
+        	type = #{type},
+        	state = #{state},
+        	name = #{name},
+        	description = #{description},
+        	publisherid = #{publisherid},
+        	mtime = CURRENT_TIMESTAMP
+        WHERE adminid = #{adminid}
+    </update> 
+    <update id="updatePasswd" parameterType="zoopeter.module.domain.Admin">
+        UPDATE admin SET 
+        	passwd = #{passwd},
+        	mtime = CURRENT_TIMESTAMP
+        WHERE adminid = #{adminid}
+    </update>    
+    <delete id="deleteAdmin" parameterType="int">
+        DELETE FROM admin  
+        WHERE adminid = #{adminid}
+    </delete> 
+
+</mapper>
+
+
+
+

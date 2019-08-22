@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zoopeter.database">
+    <select id="getClicklog" resultType="zoopeter.module.domain.Clicklog" parameterType="Int">
+        SELECT seq, camp_id, camp_no, click_id, pub_id, sub_pub_id, sub_param1, sub_param2, sub_param3, sub_param4, idfa, adid, rtime, ip
+        FROM click_log
+        WHERE seq=#{seq}
+        LIMIT 1
+    </select>
+   
+    <select id="countClicklog" resultType="int" parameterType="zoopeter.module.domain.Clicklog">
+        SELECT count(1) 
+        FROM click_log 
+		WHERE 1=1
+		<if test="camp_no != '' and camp_no != null" >AND camp_no = #{camp_no}</if>
+		<if test="pub_id != '' and pub_id != null" >AND pub_id = #{pub_id}</if>
+		<if test="sub_pub_id != '' and sub_pub_id != null" >AND sub_pub_id = #{sub_pub_id}</if>
+		<if test="startdate != '' and startdate != null" >AND rtime >= #{startdate}</if>
+		<if test="enddate != '' and enddate != null" >AND rtime &lt;= #{enddate}</if>
+		<if test="searchtype == 'camp_id' and searchkeyword != ''" >AND camp_id like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'camp_no' and searchkeyword != ''" >AND camp_no = #{searchkeyword}</if>
+        <if test="searchtype == 'pub_id' and searchkeyword != ''" >AND pub_id = #{searchkeyword}</if>
+        <if test="searchtype == 'sub_pub_id' and searchkeyword != ''" >AND sub_pub_id = #{searchkeyword}</if>
+        <if test="searchtype == 'click_id' and searchkeyword != ''" >AND click_id = #{searchkeyword}</if>
+        <if test="searchtype == 'idfa' and searchkeyword != ''" >AND idfa = #{searchkeyword}</if>
+        <if test="searchtype == 'adid' and searchkeyword != ''" >AND adid = #{searchkeyword}</if>
+    </select>    
+    <select id="getClicklogList" resultType="zoopeter.module.domain.Clicklog" parameterType="zoopeter.module.domain.Clicklog">
+        SELECT seq, camp_id, camp_no, click_id, pub_id, sub_pub_id, sub_param1, sub_param2, sub_param3, sub_param4, idfa, adid, rtime, ip
+        FROM click_log
+        WHERE 1=1
+		<if test="camp_no != '' and camp_no != null" >AND camp_no = #{camp_no}</if>
+		<if test="pub_id != '' and pub_id != null" >AND pub_id = #{pub_id}</if>
+		<if test="sub_pub_id != '' and sub_pub_id != null" >AND sub_pub_id = #{sub_pub_id}</if>
+		<if test="startdate != '' and startdate != null" >AND rtime >= #{startdate}</if>
+		<if test="enddate != '' and enddate != null" >AND rtime &lt;= #{enddate}</if>
+		<if test="searchtype == 'camp_id' and searchkeyword != ''" >AND camp_id like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'camp_no' and searchkeyword != ''" >AND camp_no = #{searchkeyword}</if>
+        <if test="searchtype == 'pub_id' and searchkeyword != ''" >AND pub_id = #{searchkeyword}</if>
+        <if test="searchtype == 'sub_pub_id' and searchkeyword != ''" >AND sub_pub_id = #{searchkeyword}</if>
+        <if test="searchtype == 'click_id' and searchkeyword != ''" >AND click_id = #{searchkeyword}</if>
+        <if test="searchtype == 'idfa' and searchkeyword != ''" >AND idfa = #{searchkeyword}</if>
+        <if test="searchtype == 'adid' and searchkeyword != ''" >AND adid = #{searchkeyword}</if>
+        ORDER BY seq DESC
+        <if test="count != null and count > 0 and start != null">
+        LIMIT #{count} offset #{start}
+        </if>
+    </select>
+    
+    <insert id="setClicklog" parameterType="zoopeter.module.domain.Clicklog" useGeneratedKeys="true" keyProperty="seq">
+        INSERT INTO click_log ( camp_id, camp_no, click_id, pub_id, sub_pub_id, sub_param1, sub_param2, sub_param3, sub_param4, idfa, adid, rtime, ip ) 
+        VALUES ( #{camp_id}, #{camp_no}, #{click_id}, #{pub_id}, #{sub_pub_id}, #{sub_param1}, #{sub_param2}, #{sub_param3}, #{sub_param4}, #{idfa}, #{adid}, CURRENT_TIMESTAMP, #{ip} )
+    </insert>    
+
+    <update id="updateClicklog" parameterType="zoopeter.module.domain.Clicklog">
+        UPDATE click_log SET 
+        	ip = #{ip}
+        WHERE seq = #{seq}
+    </update> 
+    <delete id="deleteClicklog" parameterType="int">
+        DELETE FROM click_log  
+        WHERE seq = #{seq}
+    </delete> 
+
+</mapper>
+
+
+
+

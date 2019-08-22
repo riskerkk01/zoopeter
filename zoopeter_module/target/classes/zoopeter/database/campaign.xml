@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zoopeter.database">
+    <select id="getCampaign" resultType="zoopeter.module.domain.Campaign" parameterType="Int">
+        SELECT campaignid, name, code, startdate, enddate, rtime, mtime, note, trackercode, publisherids, launchingurl, state, appname, clickcnt, installcnt, revenue
+        ,(select value from sitecode where category='trackersite' and code=campaign.trackercode ) as trackername 
+        FROM campaign
+        WHERE campaignid=#{campaignid}
+        LIMIT 1
+    </select>
+    <select id="getCampaignByCode" resultType="zoopeter.module.domain.Campaign" parameterType="String">
+        SELECT campaignid, name, code, startdate, enddate, rtime, mtime, note, trackercode, publisherids, launchingurl, state, appname, clickcnt, installcnt, revenue
+        FROM campaign
+        WHERE code=#{code}
+        LIMIT 1
+    </select>    
+    <select id="countCampaign" resultType="int" parameterType="zoopeter.module.domain.Campaign">
+        SELECT count(1) 
+        FROM campaign 
+		WHERE 1=1
+		<if test="state != '' and state != null" >AND state = #{state}</if>
+		<if test="startdate != '' and startdate != null" >AND startdate >= #{startdate}</if>
+		<if test="enddate != '' and enddate != null" >AND enddate &lt;= #{enddate}</if>
+		<if test="searchtype == 'code' and searchkeyword != ''" >AND code like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'name' and searchkeyword != ''" >AND name like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'appname' and searchkeyword != ''" >AND appname like CONCAT('%',#{searchkeyword},'%')</if>
+    </select>    
+    <select id="getCampaignList" resultType="zoopeter.module.domain.Campaign" parameterType="zoopeter.module.domain.Campaign">
+        SELECT campaignid, name, code, startdate, enddate, rtime, mtime, note, trackercode, publisherids, launchingurl, state, appname, clickcnt, installcnt, revenue
+        ,(select value from sitecode where category='trackersite' and code=campaign.trackercode ) as trackername 
+        FROM campaign
+        WHERE 1=1
+        <if test="state != '' and state != null" >AND state = #{state}</if>
+        <if test="startdate != '' and startdate != null" >AND startdate >= #{startdate}</if>
+		<if test="enddate != '' and enddate != null" >AND enddate &lt;= #{enddate}</if>
+        <if test="searchtype == 'code' and searchkeyword != ''" >AND code like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'name' and searchkeyword != ''" >AND name like CONCAT('%',#{searchkeyword},'%')</if>
+        <if test="searchtype == 'appname' and searchkeyword != ''" >AND appname like CONCAT('%',#{searchkeyword},'%')</if>
+        ORDER BY campaignid DESC
+        <if test="count != null and count > 0 and start != null">
+        LIMIT #{count} offset #{start}
+        </if>
+    </select>
+    
+    <insert id="setCampaign" parameterType="zoopeter.module.domain.Campaign" useGeneratedKeys="true" keyProperty="campaignid">
+        INSERT INTO campaign ( name, code, startdate, enddate, rtime, mtime, note, trackercode, publisherids, launchingurl, state, appname, clickcnt, installcnt, revenue ) 
+        VALUES ( #{name}, #{code}, #{startdate}, #{enddate}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, #{note}, #{trackercode}, #{publisherids}, #{launchingurl}, #{state}, #{appname}, #{clickcnt}, #{installcnt}, #{revenue} )
+    </insert>    
+
+    <update id="updateCampaign" parameterType="zoopeter.module.domain.Campaign">
+        UPDATE campaign SET 
+        	name = #{name},
+        	code = #{code},
+        	startdate = #{startdate},
+        	enddate = #{enddate},
+        	note = #{note},
+        	trackercode = #{trackercode},
+        	publisherids = #{publisherids},
+        	launchingurl = #{launchingurl},
+        	state = #{state},
+        	appname = #{appname},
+        	mtime = CURRENT_TIMESTAMP
+        WHERE campaignid = #{campaignid}
+    </update> 
+	<update id="updateCampaignCount" parameterType="zoopeter.module.domain.Campaign">
+        UPDATE campaign SET 
+        	clickcnt = #{clickcnt},
+        	installcnt = #{installcnt},
+        	revenue = #{revenue}
+        WHERE campaignid = #{campaignid}
+    </update>  
+       
+    <delete id="deleteCampaign" parameterType="int">
+        DELETE FROM campaign  
+        WHERE campaignid = #{campaignid}
+    </delete> 
+
+</mapper>
+
+
+
+

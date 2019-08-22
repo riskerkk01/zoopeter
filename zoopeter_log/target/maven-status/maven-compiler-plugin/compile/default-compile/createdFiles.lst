@@ -1,0 +1,5 @@
+zoopeter\log\controller\MainController.class
+zoopeter\log\controller\ErrorController.class
+zoopeter\log\controller\ClickController.class
+zoopeter\log\controller\PostbackAdbrixController.class
+zoopeter\log\config\AppConfig.class
