@@ -26,7 +26,7 @@ public class MainController {
 	private String m_pagecode = "home";
 	@Autowired	private AdminService adminService;
 	
-	@RequestMapping("/test")
+	@RequestMapping("/")
 	public String index( HttpSession session, Model model, 
 			HttpServletResponse response, HttpServletRequest request) {
 		
