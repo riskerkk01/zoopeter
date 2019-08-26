@@ -46,10 +46,10 @@ public class PublisherRepository {
 	}
 
 	public void updatePublisher(Publisher publisher) throws SQLException {
-		sql.update("database.updatePublisher", publisher);
+		sql.update("zoopeter.database.updatePublisher", publisher);
 	}
 	
 	public void deletePublisher(int publisherid) throws SQLException {
-		sql.update("database.deletePublisher", publisherid);
+		sql.update("zoopeter.database.deletePublisher", publisherid);
 	}
 }

@@ -4,7 +4,7 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="zoopeter_module-1.0.9.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zoopeter_module/zoopeter_module">
+        <dependent-module archiveName="zoopeter_module-1.0.10.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zoopeter_module/zoopeter_module">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/zoopeter_admin/target/classes"/>

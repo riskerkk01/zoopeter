@@ -171,8 +171,6 @@ public class PostbackAppsflyerController {
 			return "postback_error";
 		}
 		
-
-		
 		String postback_url = publisher.getPostback_url();
 		if( "".equals( postback_url ) != true ) {
 			postback_url = postback_url.replace( "{click_id}", click_id );
