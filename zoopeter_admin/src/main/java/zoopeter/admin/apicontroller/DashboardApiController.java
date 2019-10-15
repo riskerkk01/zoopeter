@@ -113,14 +113,14 @@ public class DashboardApiController {
 			Adbrix adbrix = new Adbrix();
 			adbrix.setCb_param4(Integer.toString( camp_no ));
 			adbrix.setStartdate( startdate );
-			adbrix.setEnddate( enddate );
+			adbrix.setEnddate( enddate + " 23:59:59" );
 			adbrixList = adbrixService.getAdbrixListForDashboard(adbrix);
 		}
 		if( "adbrixre".equals( trackercode ) == true ) {
 			Adbrixre adbrixre = new Adbrixre();
 			adbrixre.setCb_param4(Integer.toString( camp_no ));
 			adbrixre.setStartdate( startdate );
-			adbrixre.setEnddate( enddate );
+			adbrixre.setEnddate( enddate + " 23:59:59" );
 			adbrixreList = adbrixreService.getAdbrixreListForDashboard(adbrixre);
 		}
 
@@ -128,7 +128,7 @@ public class DashboardApiController {
 			Appsflyer appsflyer = new Appsflyer();
 			appsflyer.setCampaign( qCampaign.getCode() );
 			appsflyer.setStartdate( startdate );
-			appsflyer.setEnddate( enddate );
+			appsflyer.setEnddate( enddate + " 23:59:59" );
 			appsflyerList = appsflyerService.getAppsflyerListForDashboard(appsflyer);
 		}
 		
@@ -145,8 +145,8 @@ public class DashboardApiController {
 		
 		while (calS.getTimeInMillis() <= calE.getTimeInMillis()) {
 			String checkDate = dateFormat.format(calS.getTime());
-			calS.add(Calendar.DATE, 1);
-			//System.out.println("checkDate : " + checkDate + " clicklogstate : " + clicklogList.size() );
+			calS.add(Calendar.DATE, 1); 
+			System.out.println("checkDate : " + checkDate + " clicklogstate : " + clicklogList.size() );
 			
 			List<Dashboard> tmp_dashboardList = new ArrayList<Dashboard>();
 			for( int i=0; i<publishers.length; i++ ) {
