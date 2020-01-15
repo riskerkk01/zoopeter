@@ -11,6 +11,7 @@
 <#include "/template/manage/clicklog.ftl"> 
 <#include "/template/manage/dashboard.ftl">
 
+<#include "/template/postback/common.ftl">
 <#include "/template/postback/adbrix.ftl">
 <#include "/template/postback/adbrixre.ftl">
 <#include "/template/postback/appsflyer.ftl">

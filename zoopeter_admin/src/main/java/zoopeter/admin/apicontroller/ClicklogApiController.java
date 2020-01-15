@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,7 +49,7 @@ public class ClicklogApiController {
 		return "test";
 	}
 	
-	@RequestMapping(value = { "/list" }, method=RequestMethod.POST) 
+	@RequestMapping(value = { "/list" }, method=RequestMethod.POST)
 	public ResultPageDomain<Clicklog> list(
 			@RequestBody Clicklog sclicklog,
 			HttpSession session, Model model

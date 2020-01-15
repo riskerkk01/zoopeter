@@ -15,7 +15,8 @@ const routes = [
   
   ,{ path : '/clicklog', component : clicklog, name : 'clicklog', props: (route) => ({ camp_no: route.query.camp_no }) }
   ,{ path : '/dashboard', component : dashboard, name : 'dashboard' , props: (route) => ({ camp_no: route.query.camp_no }) }
-  
+
+  ,{ path : '/common', component : common, name : 'common'}
   ,{ path : '/adbrix', component : adbrix, name : 'adbrix'}
   ,{ path : '/adbrixre', component : adbrixre, name : 'adbrixre'}
   ,{ path : '/appsflyer', component : appsflyer, name : 'appsflyer'}

@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 
 
-
+import springfox.documentation.annotations.Cacheable;
 import zoopeter.module.domain.*;
 import zoopeter.module.services.*;
 
@@ -50,7 +50,7 @@ public class AdminApiController {
 		return "test";
 	}
 	
-	@RequestMapping(value = { "/list" }, method=RequestMethod.POST) 
+	@RequestMapping(value = { "/list" }, method=RequestMethod.POST)
 	public ResultPageDomain<Admin> list(
 			@RequestBody Admin sadmin,
 			HttpSession session, Model model

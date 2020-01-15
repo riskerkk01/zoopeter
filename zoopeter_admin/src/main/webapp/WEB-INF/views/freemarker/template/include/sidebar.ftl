@@ -30,6 +30,7 @@
                   	<li class="nav-item">
                     	<a id="menu_postback" href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-database"></i> 포스트백</a>
                     	<div class="dropdown-menu dropdown-menu-arrow">
+							<router-link to="common" class="dropdown-item" active-class="dropdown-item active"><i class="fe fe-codepen"></i> 상위매체</router-link>
                     		<router-link to="adbrix" class="dropdown-item" active-class="dropdown-item active"><i class="fe fe-codepen"></i> Adbrix</router-link>
                     		<router-link to="adbrixre" class="dropdown-item" active-class="dropdown-item active"><i class="fe fe-box"></i> Adbrix remaster</router-link>
                     		<router-link to="appsflyer" class="dropdown-item" active-class="dropdown-item active"><i class="fe fe-send"></i> Appsflyer</router-link>
